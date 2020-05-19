@@ -284,6 +284,9 @@ describe('Internal Dashboard', function () {
                         const input = page.selectors.create_manage_users.current_users.settings.inputByLabel(setting.label, setting.type);
                         browser.waitForVisible(input);
                         browser.setValue(input, setting.updated);
+
+                        const updatedValue = browser.getValue(input);
+                        expect(updatedValue).to.equal(setting.updated);
                     }
                 });
                 it('Ensure that the user dirty message is shown', function () {
