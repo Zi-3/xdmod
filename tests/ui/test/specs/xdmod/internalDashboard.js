@@ -285,8 +285,7 @@ describe('Internal Dashboard', function () {
                         browser.waitForVisible(input);
                         browser.setValue(input, setting.updated);
 
-                        const updatedValue = browser.getValue(input);
-                        expect(updatedValue).to.equal(setting.updated);
+                        expect(browser.getValue(input)).to.equal(setting.updated);
                     }
                 });
                 it('Ensure that the user dirty message is shown', function () {
