@@ -112,6 +112,11 @@ workflows:
     triggers:
       - schedule:
           cron: "35 10 * * *"
+          filters:
+            branches:
+              only:
+                - xdmod9.5
+
     jobs:
       - build:
           matrix:
