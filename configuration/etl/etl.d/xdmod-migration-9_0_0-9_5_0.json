@@ -6,7 +6,7 @@
             "class": "ExecuteSql",
             "options_class": "MaintenanceOptions"
         },
-        "cloud-migration-9_0_0-9_5_0": {
+        "cloud-migration-9-0-0_9-5-0": {
             "namespace": "ETL\\Ingestor",
             "options_class": "IngestorOptions",
             "endpoints": {
@@ -24,7 +24,7 @@
               }
             }
          },
-         "cloud-resource-specs-migration-9_0_0-9_5_0": {
+         "cloud-resource-specs-migration-9-0-0_9-5-0": {
              "namespace": "ETL\\Ingestor",
              "options_class": "IngestorOptions",
              "endpoints": {
@@ -38,8 +38,7 @@
                    "type": "mysql",
                    "name": "Cloud DB",
                    "config": "datawarehouse",
-                   "schema": "modw_cloud",
-                   "truncate_destination": true
+                   "schema": "modw_cloud"
                }
              }
           }
@@ -120,9 +119,46 @@
                     "schema": "mod_shredder"
                 }
             }
+        },
+        {
+            "name": "update-Users-table",
+            "description": "Updating Users.username to not allow null values.",
+            "class": "ManageTables",
+            "definition_file_list": [
+                "xdb/users.json"
+            ],
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "XDMoD Database",
+                    "config": "database",
+                    "schema": "moddb"
+                }
+            }
+        },
+        {
+            "name": "moddb-disable-empty-usernames",
+            "description": "Disable any accounts that have empty username values.",
+            "namespace": "ETL\\Maintenance",
+            "class": "ExecuteSql",
+            "options_class": "MaintenanceOptions",
+            "sql_file_list": [
+                {
+                    "delimiter": ";",
+                    "sql_file": "migrations/9.0.0-9.5.0/moddb/disable_empty_username.sql"
+                }
+            ],
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "XDMoD Database",
+                    "config": "database",
+                    "schema": "moddb"
+                }
+            }
         }
     ],
-    "cloud-migration-9_0_0-9_5_0": [
+    "cloud-migration-9-0-0_9-5-0": [
         {
           "name": "UpdateEventTypes",
           "description": "Update event type on event table",
@@ -133,6 +169,10 @@
               {
                   "delimiter": ";",
                   "sql_file": "migrations/9.0.0-9.5.0/modw_cloud/update_event_types.sql"
+              },
+              {
+                  "delimiter": ";",
+                  "sql_file":"migrations/9.0.0-9.5.0/modw_cloud/update_hosts_table_index.sql"
               }
           ]
         },
@@ -186,12 +226,13 @@
             }
         }
     ],
-    "cloud-resource-specs-migration-9_0_0-9_5_0": [
+    "cloud-resource-specs-migration-9-0-0_9-5-0": [
         {
             "name": "CloudResourceSpecsReconstructor",
             "class": "CloudResourceSpecsStateTransformIngestor",
             "definition_file": "cloud_common/resource_specifications_transformer.json",
-            "description": "Sets a start and end time for memory and vcpu paring for a compute node on a cloud resource"
+            "description": "Sets a start and end time for memory and vcpu paring for a compute node on a cloud resource",
+            "truncate_destination": true
         },
         {
             "#": "Asset data must be aggregated post ingestion",
@@ -211,8 +252,7 @@
                     "name": "Aggregate DB",
                     "config": "datawarehouse",
                     "schema": "modw_aggregates",
-                    "create_schema_if_not_exists": true,
-                    "truncate_destination": true
+                    "create_schema_if_not_exists": true
                 }
             }
         }
