@@ -107,7 +107,7 @@ workflows:
           matrix:
             parameters:
               install-type: ["fresh_install", "upgrade"]
-              triggered-by: ["normal"]
+              triggered-by: ["xdmod-time-trigger"]
   nightly:
     triggers:
       - schedule:
