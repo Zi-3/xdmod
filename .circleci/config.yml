@@ -90,6 +90,7 @@ jobs:
             ./vendor/phpunit/phpunit/phpunit -c ./tests/integration/phpunit.xml.dist --testsuite sso --log-junit ~/phpunit/xdmod-sso-integration.xml
       - run:
           name: Process Code Coverage Data
+          no_output_timeout: 45m
           command: ./tools/dev/code_coverage/codeCoverageProcess.sh -e JOB_TRIGGERED_BY_NAME -a "xdmod-time-trigger" -i ~/code_coverage
       - run:
           name: Ensure that no unexpected Apache errors were generated
