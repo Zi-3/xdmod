@@ -42,6 +42,7 @@ jobs:
           command: |
             mkdir ~/phpunit
             mkdir /tmp/screenshots
+            mkdir ~/code_coverage
       - run:
           name: Setup Environment Variables
           command: |
@@ -89,7 +90,7 @@ jobs:
             ./vendor/phpunit/phpunit/phpunit -c ./tests/integration/phpunit.xml.dist --testsuite sso --log-junit ~/phpunit/xdmod-sso-integration.xml
       - run:
           name: Process Code Coverage Data
-          command: ./tools/dev/code_coverage/codeCoverageProcess.sh -e JOB_TRIGGERED_BY_NAME -a "xdmod-time-trigger"
+          command: ./tools/dev/code_coverage/codeCoverageProcess.sh -e JOB_TRIGGERED_BY_NAME -a "xdmod-time-trigger" -i ~/code_coverage
       - run:
           name: Ensure that no unexpected Apache errors were generated
           command: test `fgrep -v ' [ssl:warn] ' /var/log/xdmod/apache-error.log | wc -l` = 0
@@ -99,6 +100,8 @@ jobs:
           path: /var/log/xdmod
       - store_test_results:
           path: ~/phpunit
+      - store_artifacts:
+          path: ~/code_coverage
 
 workflows:
   full-build:
