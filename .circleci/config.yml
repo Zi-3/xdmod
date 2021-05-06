@@ -67,9 +67,6 @@ jobs:
       - run:
           name: Installing Code Coverage Dependencies
           command: ./tools/dev/code_coverage/codeCoverageSetup.sh -e JOB_TRIGGERED_BY_NAME -a "xdmod-time-trigger" -b . -x ./tools/dev/code_coverage/start_xdebug.php  -p ./tools/dev/code_coverage/combine_xdebug.php
-      - run:
-          name: Make sure that the Composer Test Depedencies are installed
-          command: composer install --no-progress
       - run: ./tests/regression/runtests.sh
       - run:
           name: Setup Configuration Files for Integration Tests
