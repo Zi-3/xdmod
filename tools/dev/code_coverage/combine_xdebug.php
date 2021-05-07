@@ -39,6 +39,6 @@ foreach ($coverageFiles as $coverageFile) {
 }
 
 foreach($coverageData as $testName => $coverage) {
-    $report = new PHP_CodeCoverage_Report_XML();
+    $report = new PHP_CodeCoverage_Report_HTML();
     $report->process($coverage, $reportDir . DIRECTORY_SEPARATOR . $testName);
 }
